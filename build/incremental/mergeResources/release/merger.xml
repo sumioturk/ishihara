@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res" >
+            <file
+                name="ic_launcher"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/drawable-hdpi/ic_launcher.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/drawable-mdpi/ic_launcher.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/drawable-xhdpi/ic_launcher.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/drawable-xxhdpi/ic_launcher.png"
+                qualifiers="xxhdpi"
+                type="drawable" />
+            <file
+                name="activity_channel_detail"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/activity_channel_detail.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_channel_list"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/activity_channel_list.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_channel_twopane"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/activity_channel_twopane.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="fragment_channel_detail"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/fragment_channel_detail.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values/strings.xml"
+                qualifiers="" >
+                <string name="app_name" >satomi
+                </string>
+                <string name="title_channel_detail" >Channel Detail
+                </string>
+            </file>
+            <file
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values/styles.xml"
+                qualifiers="" >
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Light" >
+
+                    <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+                    -->
+                </style>
+
+                <style
+                    name="AppTheme"
+                    parent="AppBaseTheme" >
+
+                    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+                </style>
+            </file>
+            <file
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values-large/refs.xml"
+                qualifiers="large" >
+                <item
+                    name="activity_channel_list"
+                    type="layout">
+@layout/activity_channel_twopane
+                </item>
+            </file>
+            <file
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values-sw600dp/refs.xml"
+                qualifiers="sw600dp" >
+                <item
+                    name="activity_channel_list"
+                    type="layout">
+@layout/activity_channel_twopane
+                </item>
+            </file>
+            <file
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values-v11/styles.xml"
+                qualifiers="v11" >
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Holo.Light" >
+
+                    <!-- API 11 theme customizations can go here. -->
+                </style>
+            </file>
+            <file
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values/apis.xml"
+                qualifiers="" />
+        </source>
+        <source path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/build/res/rs/release" />
+    </dataSet>
+    <dataSet config="release" >
+        <source path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/release/res" />
+    </dataSet>
+
+</merger>
