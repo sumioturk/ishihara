@@ -1,9 +1,11 @@
 package com.sumioturk.satomi.domain.user;
 
+import java.io.Serializable;
+
 /**
  * User object
  */
-public class User {
+public class User implements Serializable {
 
     private String name;
 

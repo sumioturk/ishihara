@@ -1,9 +1,11 @@
 package com.sumioturk.satomi.domain.message;
 
+import java.io.Serializable;
+
 /**
  * Message object
  */
-public class Message {
+public class Message implements Serializable {
 
     private String text;
 

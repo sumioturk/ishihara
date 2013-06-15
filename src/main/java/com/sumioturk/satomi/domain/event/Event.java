@@ -1,11 +1,13 @@
 package com.sumioturk.satomi.domain.event;
 
+import java.io.Serializable;
+
 /**
  * Event Object
  *
  * @param <T> {@link EventBodyType} a type of an event
  */
-public class Event<T> {
+public class Event<T> implements Serializable {
 
     private String id;
 

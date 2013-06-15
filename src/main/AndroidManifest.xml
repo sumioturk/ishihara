@@ -30,6 +30,7 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".ChannelListActivity"/>
         </activity>
+        <service android:name="com.sumioturk.satomi.service.SatomiConnectionService" android:process=":remote"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest>

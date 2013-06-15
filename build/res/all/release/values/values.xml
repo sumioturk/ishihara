@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">satomi</string>
+    <string name="server_url">http://sashimiquality.com:9000/</string>
     <string name="title_channel_detail">Channel Detail</string>
 
     <style name="AppBaseTheme" parent="android:Theme.Light">

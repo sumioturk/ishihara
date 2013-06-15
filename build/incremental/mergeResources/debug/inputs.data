@@ -2,14 +2,15 @@
 # format is <lastModified> <length> <SHA-1> <path>
 # Encoding is UTF-8
 1371270311000 132 754d55c7afffb04760376a33601bed3b38c600a4 /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values/apis.xml
-1371225407000 186 2bbfa2fe44460d252046c493ce149d9607092ec1 /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values/strings.xml
+1371282646000 258 d69fdc9f45e27f1983924ab4a7b712b2b168927d /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values/strings.xml
 1371225407000 393 1716f2e79e7fe08f18d33dbcdf152c72b786f4f3 /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/fragment_channel_detail.xml
 1371225407000 680 c76f4caaa7a8dfe9727fa93001b3aee3b22d6716 /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values/styles.xml
 1371225407000 463 ccca0854bb5457aec36bcae74140552f4e8f492f /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/activity_channel_list.xml
 1371225407000 705 c1dd7120c5cbfd57ca23fe32423253af6e51ec10 /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/drawable-mdpi/ic_launcher.png
 1371225407000 1470 426bc256ac90c31e5c22fbb61c7e095facd5f213 /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/drawable-xhdpi/ic_launcher.png
-1371225407000 331 d233530d1d8a017beaa0f7fd605ba1af7eab6d3c /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/activity_channel_detail.xml
 1371225407000 376 3d716ed0f8b01d8aee042ff115558e4dd0a0166d /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values-large/refs.xml
+1371225407000 331 d233530d1d8a017beaa0f7fd605ba1af7eab6d3c /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/activity_channel_detail.xml
+1371305275000 444 a72a9d74a8badd61553335af4d26053cf16fd86b /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/activity_main.xml
 1371225407000 376 3d716ed0f8b01d8aee042ff115558e4dd0a0166d /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values-sw600dp/refs.xml
 1371225407000 1384 2e714c5c4313e690e24c6f2634c106280491f489 /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/activity_channel_twopane.xml
 1371225407000 1055 bdea4cdb729baeb3b42359fcb57a817be926b102 /Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/drawable-hdpi/ic_launcher.png

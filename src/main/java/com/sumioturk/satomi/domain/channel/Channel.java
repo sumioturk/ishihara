@@ -2,12 +2,13 @@ package com.sumioturk.satomi.domain.channel;
 
 import com.sumioturk.satomi.domain.user.User;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Channel object
  */
-public class Channel {
+public class Channel implements Serializable {
 
     private String id;
 
