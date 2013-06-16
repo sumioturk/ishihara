@@ -11,7 +11,10 @@ import java.util.List;
  */
 public class MessageRepository implements AsyncRepository<String> {
 
-    public MessageRepository() {
+    private String userId;
+
+    public MessageRepository(String userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -20,14 +23,14 @@ public class MessageRepository implements AsyncRepository<String> {
     }
 
     @Override
-    public void resolveAll(String id, RepositoryAsyncCallback<List<String>> callback) {
+    public void resolveAll(RepositoryAsyncCallback<List<String>> callback) {
         return;
     }
 
     @Override
     public void store(final String obj, final RepositoryAsyncCallback<String> callback) {
         try {
-            URL url = new URL("http://sashimiquality.com:9000/event/message/5176c206e4b0e56350837a44/517787a1e4b0422dfe1136f2/" + obj);
+            URL url = new URL("http://sashimiquality.com:9000/event/message/5176c206e4b0e56350837a44/" + userId + "/" + obj);
             String method = "GET";
             HttpAsyncTask task = new HttpAsyncTask(url, method, null, new HttpAsyncTask.HttpAsyncTaskCallback() {
                 @Override

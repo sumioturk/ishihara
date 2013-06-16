@@ -5,10 +5,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -64,6 +61,8 @@ public class SatomiConnectionService extends Service {
 
     private EventJsonConverter converter;
 
+    private Runnable connectRunnable;
+
     public class Servicehandler extends Handler {
 
         @Override
@@ -74,6 +73,7 @@ public class SatomiConnectionService extends Service {
                 case SET_LISTENER:
                     Log.e("SatomiConnectionService", "Set Listener");
                     serviceListeners.add(msg.replyTo);
+                    startConnectingStream(msg.getData().getString("user"));
                     break;
                 case UNSET_LISTENER:
                     Log.e("SatomiConnectionService", "Unset Listener");
@@ -87,22 +87,13 @@ public class SatomiConnectionService extends Service {
         }
     }
 
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        converter = new EventJsonConverter();
-
-        executor = Executors.newSingleThreadExecutor();
-        executor2 = Executors.newSingleThreadExecutor();
-
-        Runnable connectRunnable = new Runnable() {
+    private void startConnectingStream(final String userId){
+        connectRunnable = new Runnable() {
             @SuppressLint("NewApi")
             @Override
             public void run() {
                 try {
-                    conn = ((HttpURLConnection) new URL("http://sashimiquality.com:9000/stream/connect/5176bdfae4b0e56350837a3c?key=secret").openConnection());
+                    conn = ((HttpURLConnection) new URL("http://sashimiquality.com:9000/stream/connect/" + userId + "?key=secret").openConnection());
                     conn.setRequestMethod("GET");
                     conn.setConnectTimeout(5000);
                     conn.setReadTimeout(Integer.MAX_VALUE);
@@ -164,6 +155,17 @@ public class SatomiConnectionService extends Service {
         };
 
         executor.execute(connectRunnable);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        converter = new EventJsonConverter();
+
+        executor = Executors.newSingleThreadExecutor();
+
+
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 

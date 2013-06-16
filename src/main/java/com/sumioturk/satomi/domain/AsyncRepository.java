@@ -24,10 +24,9 @@ public interface AsyncRepository<T> {
 
     /**
      * Resolve all entities in the repository
-     * @param id
      * @return
      */
-    void resolveAll(String id, RepositoryAsyncCallback<List<T>> callback);
+    void resolveAll(RepositoryAsyncCallback<List<T>> callback);
 
     /**
      * Store entity

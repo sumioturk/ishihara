@@ -1,9 +1,11 @@
 package com.sumioturk.satomi.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.text.style.BulletSpan;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -39,6 +42,8 @@ import java.util.Map;
 public class MainActivity extends Activity implements ServiceConnection {
 
     private ListView listView;
+
+    private String userId;
 
     private ConversationAdapter adapter;
 
@@ -71,10 +76,10 @@ public class MainActivity extends Activity implements ServiceConnection {
                 default:
                     // ooops. may be using general name for an object was bad idea.
                     Event<com.sumioturk.satomi.domain.message.Message> event = ((Event<com.sumioturk.satomi.domain.message.Message>) msg.getData().getSerializable("event"));
-                    Long latency = latencies.get(event.getBody().getText()) == null ? 0 : latencies.get(event.getBody().getText());
-                    Toast whiteToast = Toast.makeText(getApplicationContext(), String.format("Network latency: %dms", (System.currentTimeMillis() - latency) - (event.getBroadcastTime() - event.getCreateTime())), Toast.LENGTH_LONG);
-                    whiteToast.setGravity(Gravity.TOP, 0, 0);
-                    whiteToast.show();
+                   // Long latency = latencies.get(event.getBody().getText()) == null ? 0 : latencies.get(event.getBody().getText());
+                   // Toast whiteToast = Toast.makeText(getApplicationContext(), String.format("Network latency: %dms", (System.currentTimeMillis() - latency) - (event.getBroadcastTime() - event.getCreateTime())), Toast.LENGTH_LONG);
+                   // whiteToast.setGravity(Gravity.TOP, 0, 0);
+                   // whiteToast.show();
                     adapter.insert(event, 0);
                     super.handleMessage(msg);
                     break;
@@ -82,11 +87,13 @@ public class MainActivity extends Activity implements ServiceConnection {
         }
     }
 
-    public class MyBroadcast
-
     public void onCreate(Bundle savedInstanceState) {
 
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+
+        userId = intent.getExtras().getString("user");
 
         textToSend = (EditText) findViewById(R.id.edit_text);
         send = (ImageButton) findViewById(R.id.send);
@@ -108,7 +115,7 @@ public class MainActivity extends Activity implements ServiceConnection {
                     latencies.put(textToSend.getText().toString(), System.currentTimeMillis());
                     try {
                         String text = URLEncoder.encode(textToSend.getText().toString(), "UTF-8").replaceAll("\\+", "%20");
-                        new MessageRepository().store(text, new AsyncRepository.RepositoryAsyncCallback<String>() {
+                        new MessageRepository(userId).store(text, new AsyncRepository.RepositoryAsyncCallback<String>() {
                             @Override
                             public void onEntity(String entity) {
                                 runOnUiThread(new Runnable() {
@@ -205,6 +212,10 @@ public class MainActivity extends Activity implements ServiceConnection {
 
         Message message = Message.obtain(null, SatomiConnectionService.SET_LISTENER);
         message.replyTo = messenger;
+
+        Bundle data = new Bundle();
+        data.putString("user", userId);
+        message.setData(data);
 
         try {
 

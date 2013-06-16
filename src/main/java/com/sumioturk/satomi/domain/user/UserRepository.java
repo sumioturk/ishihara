@@ -52,7 +52,7 @@ public class UserRepository implements AsyncRepository<User> {
     }
 
     @Override
-    public void resolveAll(String id, final RepositoryAsyncCallback<List<User>> callback) {
+    public void resolveAll(final RepositoryAsyncCallback<List<User>> callback) {
         try {
             URL url = new URL("http://sashimiquality.com:9000/users");
             String method = "GET";

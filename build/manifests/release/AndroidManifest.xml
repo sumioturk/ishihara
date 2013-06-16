@@ -4,16 +4,22 @@
 
     <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
         <activity android:configChanges="keyboardHidden|orientation|screenSize" android:label="@string/app_name" android:name="com.sumioturk.satomi.activity.MainActivity">
+        </activity>
+        <activity android:label="@string/title_channel_detail" android:name="com.sumioturk.satomi.ChannelDetailActivity" android:parentActivityName=".ChannelListActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ChannelListActivity"/>
+        </activity>
+
+        <service android:name="com.sumioturk.satomi.service.SatomiConnectionService" android:process=":remote"/>
+
+        <activity android:label="@string/title_activity_launch" android:name="com.sumioturk.satomi.activity.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:label="@string/title_channel_detail" android:name="com.sumioturk.satomi.ChannelDetailActivity" android:parentActivityName=".ChannelListActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ChannelListActivity"/>
-        </activity>
-        <service android:name="com.sumioturk.satomi.service.SatomiConnectionService" android:process=":remote"/>
     </application>
+
     <uses-permission android:name="android.permission.INTERNET"/>
+
 </manifest>
