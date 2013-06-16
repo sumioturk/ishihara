@@ -47,7 +47,7 @@ public class HttpAsyncTask extends AsyncTask<Void, Integer, String> {
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod(method);
-            for(int i = 0; i < params.size(); i++){
+            for (int i = 0; params != null && i < params.size(); i++) {
                 Pair<String, String> param = params.get(i);
                 conn.setRequestProperty(param.first, param.second);
             }
@@ -55,11 +55,16 @@ public class HttpAsyncTask extends AsyncTask<Void, Integer, String> {
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
             String result = "";
-            while((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 result += line;
             }
-            return result;
-        } catch (Exception e){
+            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                return result;
+            } else {
+                callback.onFailure(new Exception());
+                return null;
+            }
+        } catch (Exception e) {
             callback.onFailure(e);
             return null;
         }

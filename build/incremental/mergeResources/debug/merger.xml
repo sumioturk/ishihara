@@ -9,6 +9,11 @@
                 qualifiers="hdpi"
                 type="drawable" />
             <file
+                name="pink_gradient"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/drawable-hdpi/pink_gradient.xml"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
                 name="ic_launcher"
                 path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/drawable-mdpi/ic_launcher.png"
                 qualifiers="mdpi"
@@ -39,10 +44,23 @@
                 qualifiers=""
                 type="layout" />
             <file
+                name="activity_main"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/activity_main.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="conversation_row"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/conversation_row.xml"
+                qualifiers=""
+                type="layout" />
+            <file
                 name="fragment_channel_detail"
                 path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/fragment_channel_detail.xml"
                 qualifiers=""
                 type="layout" />
+            <file
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values/apis.xml"
+                qualifiers="" />
             <file
                 path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values/strings.xml"
                 qualifiers="" >
@@ -105,13 +123,15 @@
                 </style>
             </file>
             <file
-                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/values/apis.xml"
-                qualifiers="" />
+                name="s"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/drawable-hdpi/s.png"
+                qualifiers="hdpi"
+                type="drawable" />
             <file
-                name="activity_main"
-                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/layout/activity_main.xml"
-                qualifiers=""
-                type="layout" />
+                name="aoki"
+                path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/src/main/res/drawable-hdpi/aoki.png"
+                qualifiers="hdpi"
+                type="drawable" />
         </source>
         <source path="/Users/sumioturk/AndroidStudioProjects/satomiProject/satomi/build/res/rs/debug" />
     </dataSet>

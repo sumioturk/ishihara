@@ -3,7 +3,7 @@
     <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="15"/>
 
     <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
-        <activity android:label="@string/app_name" android:name="com.sumioturk.satomi.activity.MainActivity">
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:label="@string/app_name" android:name="com.sumioturk.satomi.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

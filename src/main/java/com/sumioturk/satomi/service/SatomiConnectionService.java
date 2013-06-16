@@ -1,7 +1,9 @@
 package com.sumioturk.satomi.service;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,25 +11,24 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
-import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.sumioturk.satomi.R;
+import com.sumioturk.satomi.activity.MainActivity;
 import com.sumioturk.satomi.domain.event.Event;
 import com.sumioturk.satomi.infrastructure.converter.event.EventJsonConverter;
 
 import org.json.JSONArray;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -37,6 +38,12 @@ import java.util.concurrent.Executors;
 public class SatomiConnectionService extends Service {
 
     private Executor executor;
+
+    private Executor executor2;
+
+    private HttpURLConnection conn;
+
+    private volatile int count = 0;
 
     private NotificationManager notificationManager;
 
@@ -62,9 +69,11 @@ public class SatomiConnectionService extends Service {
 
             switch (msg.what) {
                 case SET_LISTENER:
+                    Log.e("SatomiConnectionService", "Set Listener");
                     serviceListeners.add(msg.replyTo);
                     break;
                 case UNSET_LISTENER:
+                    Log.e("SatomiConnectionService", "Unset Listener");
                     serviceListeners.remove(msg.replyTo);
                     break;
                 case CONNECT_STREAM:
@@ -83,44 +92,76 @@ public class SatomiConnectionService extends Service {
         converter = new EventJsonConverter();
 
         executor = Executors.newSingleThreadExecutor();
+        executor2 = Executors.newSingleThreadExecutor();
 
-        executor.execute(new Runnable() {
+
+
+        Runnable connectRunnable = new Runnable() {
+            @SuppressLint("NewApi")
             @Override
             public void run() {
                 try {
-                    Log.e("SatomiConnectionService", "Streaming started!");
-                    HttpURLConnection conn = ((HttpURLConnection) new URL("http://sashimiquality.com:9000/stream/connect/5176bdfae4b0e56350837a3c?key=secret").openConnection());
+                    conn = ((HttpURLConnection) new URL("http://sashimiquality.com:9000/stream/connect/5176bdfae4b0e56350837a3c?key=secret").openConnection());
                     conn.setRequestMethod("GET");
-                    conn.setConnectTimeout(Integer.MAX_VALUE);
+                    conn.setConnectTimeout(5000);
                     conn.setReadTimeout(Integer.MAX_VALUE);
                     conn.connect();
+                    Log.e("SatomiConnectionService", "connected!");
                     InputStream inputStream = conn.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                     String line;
-                    while((line = reader.readLine()) != null){
+
+                    while ((line = reader.readLine()) != null) {
                         Log.e("SatomiConnectionService", line);
                         List<Event> events = converter.fromJsonArray(new JSONArray(line));
-                        for(Event event: events){
+                        for (Event event : events) {
                             Bundle data = new Bundle();
                             data.putSerializable("event", event);
                             Message message = new Message();
                             message.setData(data);
-                            for(Messenger messenger: serviceListeners){
+                            if (serviceListeners.size() == 0) {
+                                Log.e("SatomiConnectionService", "Notification has fired!");
+                                Notification noti = new Notification.Builder(getBaseContext())
+                                        .setContentTitle("Message from " + event.getInvokerId())
+                                        .setContentText(((Event<com.sumioturk.satomi.domain.message.Message>)event).getBody().getText())
+                                        .setSmallIcon(R.drawable.ic_launcher)
+                                        .setOngoing(false)
+                                        .setTicker("satomi: you've got a message.")
+                                        .setContentIntent(
+                                                PendingIntent.getActivity(
+                                                        getApplicationContext(),
+                                                        0,
+                                                        new Intent(getBaseContext(), MainActivity.class),
+                                                        PendingIntent.FLAG_UPDATE_CURRENT))
+                                        .build();
+                                noti.flags |= Notification.FLAG_SHOW_LIGHTS;
+                                noti.defaults |= Notification.DEFAULT_SOUND;
+                                noti.flags |= Notification.FLAG_AUTO_CANCEL;
+                                noti.defaults |= Notification.DEFAULT_VIBRATE;
+                                notificationManager.notify(++count, noti);
+                            }
+                            for (Messenger messenger : serviceListeners) {
+                                Log.e("SatomiConnectionService", String.format("message fired! %d", serviceListeners.size()));
                                 messenger.send(message);
                             }
                         }
                     }
+                }catch (IOException e){
+                    Log.e("HTTP CONNECTION", "LOST! RECONNECTING!!!!! :(");
+                    executor.execute(this);
+                    e.printStackTrace();
                 } catch (Exception e) {
+                    Log.e("HTTP CONNECTION", "LOST!!!! UNRECOVERABLE :P");
                     e.printStackTrace();
                 }
 
             }
-        });
+        };
+
+        executor.execute(connectRunnable);
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-
-        Toast.makeText(this, "Service created", Toast.LENGTH_SHORT).show();
 
         servicehandler = new Servicehandler();
         serviceMessenger = new Messenger(servicehandler);

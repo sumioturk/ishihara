@@ -5,6 +5,40 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:text="Aoki Family"></TextView>
+
+    <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:textDirection="rtl"
+            >
+
+        <EditText
+                android:id="@+id/edit_text"
+                android:layout_width="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="9"/>
+
+        <ImageButton
+                android:id="@+id/send"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:layout_weight="1"
+                android:background="@drawable/aoki"
+                android:layout_height="32dp"
+                android:layout_width="0dp"/>
+
+    </LinearLayout>
+
     <ListView
             android:id="@+id/list_view"
             android:layout_height="wrap_content"

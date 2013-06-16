@@ -57,7 +57,7 @@ public class EventJsonConverter implements JsonConverter<Event> {
                 case Message:
                     MessageJsonConverter converter = new MessageJsonConverter();
                     Message message = converter.fromJson(json.getJSONObject("body"));
-                    return new Event<Message>(id, createTime, broadcastTime, toChannelId, invokerId, bodyType, message);
+                    return new Event<Message>(id, createTime, broadcastTime, invokerId, toChannelId, bodyType, message);
                 default:
                     throw new IllegalArgumentException();
             }
