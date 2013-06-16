@@ -5,7 +5,10 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -94,8 +97,6 @@ public class SatomiConnectionService extends Service {
         executor = Executors.newSingleThreadExecutor();
         executor2 = Executors.newSingleThreadExecutor();
 
-
-
         Runnable connectRunnable = new Runnable() {
             @SuppressLint("NewApi")
             @Override
@@ -107,6 +108,10 @@ public class SatomiConnectionService extends Service {
                     conn.setReadTimeout(Integer.MAX_VALUE);
                     conn.connect();
                     Log.e("SatomiConnectionService", "connected!");
+                    Message rmessage = Message.obtain(null, MainActivity.SERVICE_RECONNECT);
+                    for(Messenger messenger: serviceListeners){
+                        messenger.send(rmessage);
+                    }
                     InputStream inputStream = conn.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                     String line;
@@ -116,8 +121,8 @@ public class SatomiConnectionService extends Service {
                         List<Event> events = converter.fromJsonArray(new JSONArray(line));
                         for (Event event : events) {
                             Bundle data = new Bundle();
+                            Message message = Message.obtain(null, MainActivity.SERVICE_EVENT);
                             data.putSerializable("event", event);
-                            Message message = new Message();
                             message.setData(data);
                             if (serviceListeners.size() == 0) {
                                 Log.e("SatomiConnectionService", "Notification has fired!");

@@ -53,13 +53,24 @@ public class ConversationAdapter extends ArrayAdapter<Event<Message>> {
         }
 
 
-        Event<Message> event = getItem(i);
+        final Event<Message> event = getItem(i);
 
         final TextView name = (TextView) view.findViewById(R.id.name);
         TextView date = (TextView) view.findViewById(R.id.date);
         TextView msg = (TextView) view.findViewById(R.id.message);
+        final TextView latency = (TextView) view.findViewById(R.id.latency);
+        final TextView unit = (TextView) view.findViewById(R.id.unit);
         final TextView cap = (TextView) view.findViewById(R.id.capital_letter);
 
+        final String unitString = ((event.getBroadcastTime() - event.getCreateTime()) > 1000) ? "s" : "ms";
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                unit.setText(unitString);
+                latency.setText(String.format("%d", (event.getBroadcastTime() - event.getCreateTime())));
+
+            }
+        });
         name.setText("");
         cap.setText("");
 
@@ -70,7 +81,7 @@ public class ConversationAdapter extends ArrayAdapter<Event<Message>> {
         msg.setText(event.getBody().getText());
         date.setSelected(true);
 
-        if(names.containsKey(event.getInvokerId())){
+        if (names.containsKey(event.getInvokerId())) {
             name.setText(names.get(event.getInvokerId()));
             cap.setText(String.format("%c", names.get(event.getInvokerId()).charAt(0)));
             return view;
@@ -82,7 +93,7 @@ public class ConversationAdapter extends ArrayAdapter<Event<Message>> {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if(entity == null){
+                        if (entity == null) {
                             onError(new Exception());
                             return;
                         }
@@ -103,7 +114,6 @@ public class ConversationAdapter extends ArrayAdapter<Event<Message>> {
                 });
             }
         });
-
 
 
         return view;

@@ -12,17 +12,16 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sumioturk.satomi.ChannelDetailFragment;
 import com.sumioturk.satomi.R;
 import com.sumioturk.satomi.domain.AsyncRepository;
 import com.sumioturk.satomi.domain.event.Event;
@@ -30,10 +29,9 @@ import com.sumioturk.satomi.domain.message.MessageRepository;
 import com.sumioturk.satomi.service.SatomiConnectionService;
 import com.sumioturk.satomi.ui.ConversationAdapter;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sumioturk on 6/15/13.
@@ -54,18 +52,37 @@ public class MainActivity extends Activity implements ServiceConnection {
 
     private EditText textToSend;
 
+    private Map<String, Long> latencies = new HashMap<String, Long>();
 
-    private ServiceConnection serviceConnection;
+    public static final int SERVICE_RECONNECT = 2;
+
+    public static final int SERVICE_EVENT = 1;
 
     public class MessageHandler extends Handler {
 
         @Override
         public void handleMessage(Message msg) {
-            Event<com.sumioturk.satomi.domain.message.Message> event = ((Event<com.sumioturk.satomi.domain.message.Message>) msg.getData().getSerializable("event"));
-            adapter.insert(event, 0);
-            super.handleMessage(msg);
+            switch (msg.what) {
+                case SERVICE_RECONNECT:
+                    Toast toast = Toast.makeText(getApplicationContext(), "Reconnected to the stream.", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.TOP, 0, 0);
+                    toast.show();
+                    break;
+                default:
+                    // ooops. may be using general name for an object was bad idea.
+                    Event<com.sumioturk.satomi.domain.message.Message> event = ((Event<com.sumioturk.satomi.domain.message.Message>) msg.getData().getSerializable("event"));
+                    Long latency = latencies.get(event.getBody().getText()) == null ? 0 : latencies.get(event.getBody().getText());
+                    Toast whiteToast = Toast.makeText(getApplicationContext(), String.format("Network latency: %dms", (System.currentTimeMillis() - latency) - (event.getBroadcastTime() - event.getCreateTime())), Toast.LENGTH_LONG);
+                    whiteToast.setGravity(Gravity.TOP, 0, 0);
+                    whiteToast.show();
+                    adapter.insert(event, 0);
+                    super.handleMessage(msg);
+                    break;
+            }
         }
     }
+
+    public class MyBroadcast
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -88,8 +105,9 @@ public class MainActivity extends Activity implements ServiceConnection {
             @Override
             public void onClick(View view) {
                 if (textToSend.getText().length() != 0) {
+                    latencies.put(textToSend.getText().toString(), System.currentTimeMillis());
                     try {
-                        String text = URLEncoder.encode(textToSend.getText().toString(), "UTF-8");
+                        String text = URLEncoder.encode(textToSend.getText().toString(), "UTF-8").replaceAll("\\+", "%20");
                         new MessageRepository().store(text, new AsyncRepository.RepositoryAsyncCallback<String>() {
                             @Override
                             public void onEntity(String entity) {
@@ -173,7 +191,6 @@ public class MainActivity extends Activity implements ServiceConnection {
     protected void onResume() {
         super.onResume();
         bindService(new Intent(this, SatomiConnectionService.class), this, Context.BIND_AUTO_CREATE);
-        //startService(new Intent(this, SatomiConnectionService.class));
     }
 
     @Override
@@ -209,4 +226,5 @@ public class MainActivity extends Activity implements ServiceConnection {
         messenger = null;
 
     }
+
 }
